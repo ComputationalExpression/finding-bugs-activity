@@ -1,0 +1,53 @@
+# Ten checks: nine run one program each, and one reads every file in src for TODO markers.
+# Each program check runs its program twice, once as written and once with its first value
+# changed, so keep that first line in place. A loop that never ends fails after two seconds.
+
+- description: "[SYNTAX] syntax_1.py prints Checks until dark: 3: read where the ^ points in the error message"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_bugs.py::test_syntax_1
+
+- description: "[SYNTAX] syntax_2.py prints Hours: 2 and Minutes: 25: the error names a line, and the mistake can sit at the end of it"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_bugs.py::test_syntax_2
+
+- description: "[SYNTAX] syntax_3.py prints Flashes sent: 4: an IndentationError names the line Python expected to be indented"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_bugs.py::test_syntax_3
+
+- description: "[RUNTIME] runtime_1.py prints Next year: 2027: the last line of the error says which two types were added"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_bugs.py::test_runtime_1
+
+- description: "[RUNTIME] runtime_2.py prints Spotlight: GP13: work out which position the light a person calls 3 sits at"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_bugs.py::test_runtime_2
+
+- description: "[RUNTIME] runtime_3.py prints Long flashes: 2: a NameError means a name was read before anything was stored in it"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_bugs.py::test_runtime_3
+
+- description: "[LOGIC] logic_1.py prints Chase rounds: 3, and 5 for 5 rounds: count the Round lines, then check where range stops"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_bugs.py::test_logic_1
+
+- description: "[LOGIC] logic_2.py finishes and prints Charging trips: 3: run it, stop it with Ctrl+C, and look at which value never changes"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_bugs.py::test_logic_2
+
+- description: "[LOGIC] logic_3.py prints Total flashes: 16: print total inside the loop and watch what happens to it on every trip"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_bugs.py::test_logic_3
+
+- description: "[CODE] No TODO markers remain in src: delete each TODO line once that program is fixed"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_bugs.py::test_no_todo_markers
