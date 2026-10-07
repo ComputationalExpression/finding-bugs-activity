@@ -6,9 +6,9 @@
 |Due |Monday, October 12, 9:50am |
 |Progress |[![Grade](../../actions/workflows/main.yml/badge.svg?branch=main)](../../actions/workflows/main.yml) |
 
-Nine short programs, each one taken from a lab or a session you have already done, and each one
-with exactly one bug in it. Three stop before they run, three crash partway through, and three
-run to the end and print the wrong answer.
+There are nine short programs, each one taken from a lab or a session you have already done,
+and each one has exactly one bug in it. Find and fix the bug in each one. Three stop before they
+run, three crash partway through, and three run to the end and print the wrong answer.
 
 Everything here comes from the Week 7 debugging session and the weeks before it. If a step
 confuses you, please ask about it while you are still in the room.
