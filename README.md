@@ -61,6 +61,10 @@ uv run python src/syntax_1.py
 A loop that never ends keeps printing, or sits waiting. Press `Ctrl+C` in the terminal to stop
 it.
 
+When a bug will not show itself, use duck debugging. Explain the program to your tiny duck one
+line at a time, saying what each line should do and what it actually does; the line where those
+two stop matching is usually the bug.
+
 Delete the `TODO` line at the top of each file once that program prints the right line.
 
 ## Evaluation
