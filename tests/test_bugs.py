@@ -8,7 +8,8 @@ colon is optional.
 Every check runs its program twice: once as written, and once with the first
 value in the file changed (`rounds = 3` becomes `rounds = 5`). A fix therefore
 has to work for more than the one number in the file, and that first line has
-to stay in place.
+to stay in place. `runtime_1.py` asks for a year instead, so its checks type
+in two different years.
 
 When a check fails, the assertion message names the file, says whether it
 stopped with an error, never finished, or printed the wrong value, and quotes
@@ -27,11 +28,12 @@ SRC = Path(__file__).resolve().parent.parent / "src"
 SECONDS = 2
 
 
-def run(name, tmp_path, change=None):
+def run(name, tmp_path, change=None, typed=None):
     """Run src/<name>.py and return what it printed.
 
     `change` is (variable, value): the first line that assigns `variable` is
     replaced with `variable = value` in a copy of the file, and the copy runs.
+    `typed` is what the program reads when it asks for input.
     """
     path = SRC / f"{name}.py"
     if change is not None:
@@ -47,9 +49,15 @@ def run(name, tmp_path, change=None):
         copy.write_text(re.sub(pattern, f"{variable} = {value}", source, count=1, flags=re.MULTILINE))
         path = copy
     where = f"src/{name}.py" + (f" with {change[0]} = {change[1]}" if change else "")
+    if typed is not None:
+        where += f" with {typed} typed in"
     try:
         done = subprocess.run(
-            [sys.executable, str(path)], capture_output=True, text=True, timeout=SECONDS
+            [sys.executable, str(path)],
+            input=None if typed is None else typed + "\n",
+            capture_output=True,
+            text=True,
+            timeout=SECONDS,
         )
     except subprocess.TimeoutExpired:
         raise AssertionError(
@@ -66,16 +74,20 @@ def run(name, tmp_path, change=None):
 
 
 def value(out, label):
-    """Return what follows `label` at the start of a line, normalized, or None."""
+    """Return what follows `label` at the start of a line, normalized, or None.
+
+    The label may also follow an input prompt on the same line, because a
+    typed answer is not echoed into the captured output.
+    """
     words = r"\s+".join(re.escape(word) for word in label.split())
-    match = re.search(rf"^\s*{words}\s*:?\s*([^\n]*)", out, re.IGNORECASE | re.MULTILINE)
+    match = re.search(rf"(?:^|\s)\s*{words}\s*:?\s*([^\n]*)", out, re.IGNORECASE | re.MULTILINE)
     if match is None:
         return None
     return " ".join(match.group(1).split()).upper().rstrip(".! ")
 
 
-def expect(name, tmp_path, label, want, change=None):
-    out, where = run(name, tmp_path, change)
+def expect(name, tmp_path, label, want, change=None, typed=None):
+    out, where = run(name, tmp_path, change, typed)
     got = value(out, label)
     if got is None:
         raise AssertionError(f'{where} printed no line starting "{label}"')
@@ -99,8 +111,8 @@ def test_syntax_3(tmp_path):
 
 
 def test_runtime_1(tmp_path):
-    expect("runtime_1", tmp_path, "Next year", 2027)
-    expect("runtime_1", tmp_path, "Next year", 2000, change=("date", '"12-31-1999"'))
+    expect("runtime_1", tmp_path, "Next year", 2027, typed="2026")
+    expect("runtime_1", tmp_path, "Next year", 2000, typed="1999")
 
 
 def test_runtime_2(tmp_path):

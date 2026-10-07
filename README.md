@@ -39,7 +39,7 @@ Each program prints one line at the end that says whether it is fixed:
 |`src/syntax_1.py` |Syntax |`Checks until dark: 3` |
 |`src/syntax_2.py` |Syntax |`Hours: 2`, then `Minutes: 25` |
 |`src/syntax_3.py` |Syntax |`Flashes sent: 4` |
-|`src/runtime_1.py` |Runtime |`Next year: 2027` |
+|`src/runtime_1.py` |Runtime |`Next year: 2027` when you type `2026` |
 |`src/runtime_2.py` |Runtime |`Spotlight: GP13` |
 |`src/runtime_3.py` |Runtime |`Long flashes: 2` |
 |`src/logic_1.py` |Logic |`Chase rounds: 3` |
@@ -47,7 +47,7 @@ Each program prints one line at the end that says whether it is fixed:
 |`src/logic_3.py` |Logic |`Total flashes: 16` |
 
 The checks also run every program with its first value changed, so keep that first line where
-it is.
+it is. For `runtime_1.py`, they type in a different year instead.
 
 ## Getting started
 
